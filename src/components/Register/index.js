@@ -115,7 +115,7 @@ function Register(props) {
 
 	async function onRegister() {
 		try {
-			Axios.post("http://localhost:3001/api/register",{
+			Axios.post("http://localhost:3002/api/register",{
 				fullname: fulName,
 				email: email,
 				mark: mark,

@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems } from "../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { withRouter } from "react-router-dom";
+import {  withRouter } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Axios from "axios";
+import {
+  Typography,
+  Paper,
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -88,24 +93,21 @@ const styles = (theme) => ({
     flexGrow: 1,
     height: "100vh",
     overflow: "auto",
-    alignItems: "center",
-    padding: `${theme.spacing.unit * 1}px ${theme.spacing.unit * 25}px ${
-      theme.spacing.unit * 1
-    }px`,
   },
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    alignItems: "center",
   },
   paper: {
+    padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
-    width: 700,
-    marginLeft: "auto",
-    marginRight: "auto",
+  },
+  paperContents:{
     marginTop: theme.spacing.unit * 8,
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${
       theme.spacing.unit * 3
@@ -113,6 +115,24 @@ const styles = (theme) => ({
   },
   fixedHeight: {
     height: 240,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3,
+  },
+  main: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 6 * 5)]: {
+      width: 800,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
   },
 });
 
@@ -126,13 +146,12 @@ function Dashboard(props) {
     setOpen(false);
   };
 
-  const [lost_livestock, setLost_livestock] = useState([]);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3002/api/lost_livestock").then((response) => {
-      setLost_livestock(response.data);
-    });
-  }, []);
+  const [age, setAge] = useState("");
+  const [colour, setColour] = useState("");
+  const [kind, setKind] = useState("");
+  const [brand, setBrand] = useState("");
+  const [breed, setBreed] = useState("");
+  const [size, setSize] = useState("");
 
   return (
     <div className={classes.root}>
@@ -189,40 +208,130 @@ function Dashboard(props) {
         </div>
         <List>{mainListItems}</List>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <h1>LIVESTOCK FOUND</h1>
-            </Grid>
+      <main className={classes.main}>
+      <Paper className={classes.paperContents}>
+        <Typography component="h1" variant="h3">
+          Report Missing or Stolen Livestock
+        </Typography>
+        
+        <Typography component="h1" variant="h6">
+          Complete the form below with the details of your missing livestock
+        </Typography>
+        <form
+          className={classes.form}
+          onSubmit={(e) => e.preventDefault() && false}
+        >
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="age">Livestock Age</InputLabel>
+            <Input
+              id="age"
+              name="age"
+              autoComplete="off"
+              autoFocus
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+          </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="colour">Livestock Colour</InputLabel>
+            <Input
+              id="colour"
+              name="colour"
+              autoComplete="off"
+              autoFocus
+              value={colour}
+              onChange={(e) => setColour(e.target.value)}
+            />
+          </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="kind">
+              Describe the sex of your livestock
+            </InputLabel>
+            <Input
+              id="kind"
+              name="kind"
+              autoComplete="off"
+              autoFocus
+              value={kind}
+              onChange={(e) => setKind(e.target.value)}
+            />
+          </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="brand">Livestock Brand</InputLabel>
+            <Input
+              id="brand"
+              name="brand"
+              autoComplete="off"
+              autoFocus
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+            />
+          </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="breed">Livestock Breed</InputLabel>
+            <Input
+              id="breed"
+              name="breed"
+              type="number"
+              autoComplete="off"
+              autoFocus
+              value={breed}
+              onChange={(e) => setBreed(e.target.value)}
+            />
+          </FormControl>
 
-            {lost_livestock &&
-              lost_livestock.map((val) => {
-                console.log(val.breed);
-                return (
-                  <div>
-                    <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                        <h2>Brand: {val.brand}</h2>
-                        <h2>Kind: {val.kind}</h2>
-                        <h2>Breed: {val.breed}</h2>
-                        <h2>Colour: {val.colour}</h2>
-                        <h2>Age: {val.age}</h2>
-                        <h2>Weight: {val.weight}</h2>
-                      </Paper>
-                    </Grid>
-                  </div>
-                );
-              })}
-          </Grid>
-          <Box pt={4}>
-            <h1>space 4</h1>
-          </Box>
-        </Container>
+          <FormControl
+            margin="normal" 
+            required fullWidth
+          >
+            <Input
+              id="size"
+              name="size"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              endAdornment={<InputAdornment position="end">Kg</InputAdornment>}
+              aria-describedby="size"
+              inputProps={{
+                "aria-label": "weight",
+              }}
+            />
+            <FormHelperText id="size">
+              Weight
+            </FormHelperText>
+          </FormControl>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="secondary"
+            onClick={onReport}
+            className={classes.submit}
+          >
+            Report
+          </Button>
+        </form>
+      </Paper>
       </main>
     </div>
   );
+
+  async function onReport() {
+    try {
+      Axios.post("http://localhost:3002/api/report", {
+        age: age,
+        colour: colour,
+        kind: kind,
+        brand: brand,
+        breed: breed,
+        size: size,
+      }).then(() => {
+        alert("Reported");
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
   async function logout() {
     props.history.push("/");

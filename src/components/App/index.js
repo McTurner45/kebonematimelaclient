@@ -7,6 +7,7 @@ import Dashboard from '../Dashboard'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { CssBaseline, CircularProgress } from '@material-ui/core'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Report from '../Report'
 
 const theme = createMuiTheme()
 
@@ -21,6 +22,7 @@ export default function App() {
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/dashboard" component={Dashboard} />
+					<Route exact path="/report" component={Report} />
 				</Switch>
 			</Router>
 		</MuiThemeProvider>

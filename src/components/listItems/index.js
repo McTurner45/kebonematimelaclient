@@ -1,39 +1,38 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import HomeIcon from '@material-ui/icons/Home';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import React from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import ReportProblemIcon from "@material-ui/icons/ReportProblem";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
+import { Link } from 'react-router-dom'
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to="/Dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to="/Report">
       <ListItemIcon>
-        <HomeWorkIcon />
+        <ReportProblemIcon />
       </ListItemIcon>
-      <ListItemText primary="Profile" />
+      <ListItemText primary="Report Missing" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <HomeIcon />
+        <FindInPageIcon />
       </ListItemIcon>
-      <ListItemText primary="Rooms" />
+      <ListItemText primary="Livestock Inspection" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <EventAvailableIcon />
+        <VerifiedUserIcon />
       </ListItemIcon>
-      <ListItemText primary="Bookings" />
+      <ListItemText primary="Livestock Brands" />
     </ListItem>
-    
   </div>
 );
-
