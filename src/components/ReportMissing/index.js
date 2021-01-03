@@ -105,11 +105,11 @@ const styles = (theme) => ({
     flexDirection: "column",
   },
   paperContents:{
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 15,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 10}px ${
       theme.spacing.unit * 3
     }px`,
   },
@@ -129,14 +129,15 @@ const styles = (theme) => ({
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 6 * 5)]: {
-      width: 800,
+      width: 700,
       marginLeft: "auto",
       marginRight: "auto",
     },
   },
+  
 });
 
-function Dashboard(props) {
+function ReportMissing(props) {
   const { classes } = props;
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -245,7 +246,7 @@ function Dashboard(props) {
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="kind">
-              Describe the sex of your livestock
+              Describe the kind of your livestock
             </InputLabel>
             <Input
               id="kind"
@@ -272,7 +273,6 @@ function Dashboard(props) {
             <Input
               id="breed"
               name="breed"
-              type="number"
               autoComplete="off"
               autoFocus
               value={breed}
@@ -318,7 +318,7 @@ function Dashboard(props) {
 
   async function onReport() {
     try {
-      Axios.post("http://localhost:3002/api/report", {
+      Axios.post("http://localhost:3002/api/report/missing", {
         age: age,
         colour: colour,
         kind: kind,
@@ -338,4 +338,4 @@ function Dashboard(props) {
   }
 }
 
-export default withRouter(withStyles(styles)(Dashboard));
+export default withRouter(withStyles(styles)(ReportMissing));
