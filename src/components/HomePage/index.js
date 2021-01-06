@@ -42,7 +42,7 @@ function HomePage(props) {
 					<VerifiedUserOutlined />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Wellcome To Bw Guest Houses
+					Welcome To Kebone Matimela
 				</Typography>
 				<Button
 					type="submit"

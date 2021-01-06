@@ -16,19 +16,26 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import {mainListItems} from "../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Axios from "axios";
-import {fade} from "@material-ui/core/styles";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import tow from "../Static/images/cards/tow.png";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
-import Search from "../Search"
+import {Dialog, DialogActions, DialogContent, DialogTitle, Slide} from "@material-ui/core";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
+import {fade} from "@material-ui/core/styles";
 
 const drawerWidth = 240;
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const styles = (theme) => ({
     root: {
@@ -36,7 +43,7 @@ const styles = (theme) => ({
     },
     toolbar: {
         paddingRight: 24,
-        backgroundColor: theme.palette.secondary.main, // keep right padding when drawer closed
+        backgroundColor: theme.palette.success.main, // keep right padding when drawer closed
     },
     toolbarIcon: {
         display: "flex",
@@ -44,7 +51,7 @@ const styles = (theme) => ({
         justifyContent: "flex-end",
         padding: "0 8px",
         ...theme.mixins.toolbar,
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.success.main,
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -130,39 +137,63 @@ const styles = (theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            width: '12ch',
+            width: '22ch',
             '&:focus': {
                 width: '20ch',
             },
         },
+        color: 'inherit',
     },
     card: {
         marginBottom: 20,
         alignItems: "center"
     },
-    cardButons:{
+    cardButons: {
         alignItems: "center"
+    }, alert: {
+        width: '100%',
+        '& > * + *': {
+            marginTop: theme.spacing(2),
+        },
     },
+    searchRoot:{
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.25),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.55),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    }
 });
 
 function Dashboard(props) {
     const {classes} = props;
     const [open, setOpen] = React.useState(true);
+    const [searchBrand, setSearchBrand] = useState("");
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const [openDia, setOpenDia] = React.useState(false);
+
+    const handleClose = () => {
+        setOpenDia(false);
     };
 
     const [lost_livestock, setLost_livestock] = useState([]);
@@ -172,6 +203,10 @@ function Dashboard(props) {
             setLost_livestock(response.data);
         });
     }, []);
+
+    const fiteredLivestock = lost_livestock.filter(livestock => {
+        return livestock.brand.toLowerCase().includes(searchBrand.toLowerCase());
+    })
 
     return (
         <div className={classes.root}>
@@ -203,7 +238,18 @@ function Dashboard(props) {
                         <h1>Kebone Matimela</h1>
                     </Typography>
                     <div className={classes.search}>
-                        <Search/>
+                        <Paper component="form" className={classes.searchRoot}>
+                            <InputBase
+                                className={classes.input}
+                                placeholder="Search your brand..."
+                                onChange={(e) => setSearchBrand(e.target.value)}
+                            />
+                            <IconButton type="submit" className={classes.iconButton} aria-label="search"
+                                        onClick={e => setSearchBrand(e.target.value)}
+                            >
+                                <SearchIcon/>
+                            </IconButton>
+                        </Paper>
                     </div>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -238,14 +284,37 @@ function Dashboard(props) {
                         <Grid item xs={12}>
                             <h1>LIVESTOCK FOUND</h1>
                         </Grid>
-                        {lost_livestock &&
-                        lost_livestock.map((val) => {
-                            console.log(val.breed);
+
+                        <div>
+                            <Dialog
+                                open={openDia}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-slide-title"
+                                aria-describedby="alert-dialog-slide-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">{"Steps To Claim your Animal"}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-slide-description">
+                                        Proceed to the nearest Animal control office to claim your animal. Contact
+                                        +267 770000212 for more information.
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} color="primary">
+                                        Close
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
+
+                        {fiteredLivestock.map((val) => {
                             return (
                                 <div>
                                     <Grid item xs={12}>
                                         <Card className={classes.card}>
-                                            <CardActionArea onClick={onClaim}>
+                                            <CardActionArea onClick={() => setOpenDia(true)}>
                                                 <CardMedia
                                                     component="img"
                                                     alt="missing livestock"
@@ -262,7 +331,9 @@ function Dashboard(props) {
                                                         <h2>Age: {val.age}</h2>
                                                         <h2>Weight: {val.weight}</h2>
                                                         <div>
-                                                            <Button onClick={onClaim} color="primary">
+                                                            <Button
+                                                                onClick={() => setOpenDia(true)}
+                                                                color="primary">
                                                                 Claim
                                                             </Button>
 
@@ -281,10 +352,6 @@ function Dashboard(props) {
             </main>
         </div>
     );
-
-    function onClaim(){
-
-    }
 
     async function logout() {
         props.history.push("/");

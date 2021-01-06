@@ -10,6 +10,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import ReportMissing from '../ReportMissing'
 import  ReportBuffer  from '../ReportBuffer';
 import ReportFound from '../ReportFound'
+import GenReport from "../GenReport";
+import ReportAnimalZone from "../ReportAnimalZone";
+import FoundBranded from "../FoundBranded";
+import MissingReport from "../MissingReport";
+import FoundReport from "../FoundReport";
 
 const theme = createMuiTheme()
 
@@ -27,6 +32,11 @@ export default function App() {
 					<Route exact path="/report/found" component={ReportFound} />
 					<Route exact path="/report/missing" component={ReportMissing} />
 					<Route exact path="/report_buffer" component={ReportBuffer}/>
+					<Route exact path="/generate_report" component={GenReport}/>
+					<Route exact path="/reports/missing_from_zone" component={ReportAnimalZone}/>
+					<Route exact path="/reports/history_of_a_brand" component={FoundBranded}/>
+					<Route exact path="/reports/report_of_missing" component={MissingReport}/>
+					<Route exact path="/reports/report_of_found" component={FoundReport}/>
 				</Switch>
 			</Router>
 		</MuiThemeProvider>

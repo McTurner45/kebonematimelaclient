@@ -34,7 +34,7 @@ const styles = (theme) => ({
   },
   toolbar: {
     paddingRight: 24,
-    backgroundColor: theme.palette.secondary.main, // keep right padding when drawer closed
+    backgroundColor: theme.palette.success.main, // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: "flex",
@@ -42,7 +42,7 @@ const styles = (theme) => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.success.main,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
