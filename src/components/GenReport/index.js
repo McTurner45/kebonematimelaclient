@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -20,6 +20,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import three from "../Static/images/cards/three.png";
+import Axios from "axios";
 
 const drawerWidth = 240;
 
@@ -127,6 +128,19 @@ function GenReport(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    Axios.defaults.withCredentials = true;
+
+    const [loginStatus, setLoginStatus] = useState("")
+
+    useEffect(() => {
+        Axios.get("http://localhost:3002/api/login").then((response) => {
+            if (response.data.loggedIn === true) {
+                setLoginStatus(response.data.user[0])
+            } else {
+                props.history.push("/");
+            }
+        })
+    }, [])
 
     return (
         <div className={classes.root}>
@@ -194,7 +208,6 @@ function GenReport(props) {
 
                         <Grid container className={classes.cards} spacing={10}>
 
-
                             <Card className={classes.card}>
                                 <CardActionArea component={Link} to="/reports/missing_from_zone">
 
@@ -260,7 +273,9 @@ function GenReport(props) {
     );
 
     async function logout() {
-        props.history.push("/");
+        Axios.get("http://localhost:3002/api/logount").then(() => {
+            props.history.push("/");
+        })
     }
 }
 

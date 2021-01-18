@@ -11,7 +11,7 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import {mainListItems} from "../listItems";
+import {mainListItems} from "../../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {withRouter} from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -123,13 +123,13 @@ const styles = (theme) => ({
         width: 240,
 
     },
-    chart:{
+    chart: {
         marginTop: -10,
         marginBottom: 15,
     },
-    rootChart:{
+    rootChart: {
 
-        alignItems:'center',
+        alignItems: 'center',
     }
 
 });
@@ -338,7 +338,9 @@ function FoundReport(props) {
         ;
 
     async function logout() {
-        props.history.push("/");
+        Axios.get("http://localhost:3002/api/logount").then(() => {
+            props.history.push("/");
+        })
     }
 }
 

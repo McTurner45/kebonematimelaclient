@@ -11,16 +11,16 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import {mainListItems} from "../listItems";
+import {mainListItems} from "../../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {withRouter} from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Menu, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Axios from "axios";
+import {PieChart} from "react-minimal-pie-chart";
 import Grid from "@material-ui/core/Grid";
-import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
 
 const drawerWidth = 240;
 
@@ -106,22 +106,26 @@ const styles = (theme) => ({
     table: {
         minWidth: 650,
     },
-    search: {
+    zonesBtn: {
         marginBottom: 10,
-        padding: 50,
     },
+    pichart: {
+        width: 240,
 
-    searchRoot:{
-        padding: 10,
     },
-    input:{
-        width:540,
+    chart:{
+        marginTop: -10,
+        marginBottom: 15,
     },
+    rootChart:{
+
+        alignItems:'center',
+    }
 
 });
 
 
-function MissingReport(props) {
+function ReportAnimalZone(props) {
     const {classes} = props;
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -131,19 +135,60 @@ function MissingReport(props) {
         setOpen(false);
     };
 
-    const [seachBrand, setSearchBrand]=React.useState("");
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const [zone, setZone] = React.useState("");
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const [lost_livestock, setLost_livestock] = useState([]);
 
     useEffect(() => {
-        Axios.get("http://localhost:3002/api/get_all_lost_livestock").then((response) => {
+        Axios.get("http://localhost:3002/api/get_all_livestock").then((response) => {
             setLost_livestock(response.data);
         });
     }, []);
 
     const fiteredLivestock = lost_livestock.filter(livestock => {
-        return livestock.brand.toLowerCase().includes(seachBrand.toLowerCase());
+        return livestock.zone.toLowerCase().includes(zone.toLowerCase());
+    })
+
+    let animal1 = "Cow";
+    let animal2 = "Goat";
+    let animal3 = "Sheep";
+    let animal4 = "Donkey";
+    let animal5 = "Horse";
+    let animal6 = "Pig";
+
+
+    const cows = fiteredLivestock.filter(cow => {
+        return cow.kind.toLowerCase().includes(animal1.toLowerCase());
+    })
+
+    const sheeps = fiteredLivestock.filter(sheep => {
+        return sheep.kind.toLowerCase().includes(animal3.toLowerCase());
+    })
+
+    const goats = fiteredLivestock.filter(goat => {
+        return goat.kind.toLowerCase().includes(animal2.toLowerCase());
+    })
+
+    const donkeys = fiteredLivestock.filter(donkey => {
+        return donkey.kind.toLowerCase().includes(animal4.toLowerCase());
+    })
+
+    const horses = fiteredLivestock.filter(horse => {
+        return horse.kind.toLowerCase().includes(animal5.toLowerCase());
+    })
+
+    const pigs = fiteredLivestock.filter(pig => {
+        return pig.kind.toLowerCase().includes(animal6.toLowerCase());
     })
 
 
@@ -204,20 +249,60 @@ function MissingReport(props) {
             </Drawer>
 
             <main className={classes.content}>
-                <Grid item xs={12}>
-                    <div className={classes.search}>
-                        <Paper component="form" className={classes.searchRoot}>
-                            <InputBase
-                                className={classes.input}
-                                placeholder="Search your brand..."
-                                onChange={(e) => setSearchBrand(e.target.value)}
-                            />
-                            <IconButton type="submit" className={classes.iconButton} aria-label="search"
-                                        onClick={e => setSearchBrand(e.target.value)}
-                            >
-                                <SearchIcon/>
-                            </IconButton>
-                        </Paper>
+                <Button variant="outlined" className={classes.zonesBtn} aria-controls="Select Zone"
+                        aria-haspopup="true" onClick={handleClick}>
+                    Select Zone
+                </Button>
+
+
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={() => setZone("C1")}>C1</MenuItem>
+                    <MenuItem onClick={() => setZone("C2")}>C2</MenuItem>
+                    <MenuItem onClick={() => setZone("C3")}>C3</MenuItem>
+                    <MenuItem onClick={() => setZone("C4")}>C4</MenuItem>
+                    <MenuItem onClick={() => setZone("C5")}>C5</MenuItem>
+                    <MenuItem onClick={() => setZone("C6")}>C6</MenuItem>
+                    <MenuItem onClick={() => setZone("C7")}>C7</MenuItem>
+                    <MenuItem onClick={() => setZone("C8")}>C8</MenuItem>
+
+                </Menu>
+
+                <Grid item xs={12} className={classes.rootChart}>
+                    <Typography variant="h4" component="h2" className={classes.chart}>
+                        Animals In our Records
+                    </Typography>
+                    <div className={classes.pichart}>
+                        <PieChart
+                            animation
+                            animationDuration={500}
+                            animationEasing="ease-out"
+                            center={[50, 50]}
+                            data={[
+                                {title: animal1, value: cows.length, color: '#E38627'},
+                                {title: animal2, value: goats.length, color: '#C13C37'},
+                                {title: animal3, value: sheeps.length, color: '#216a3e'},
+                                {title: animal4, value: donkeys.length, color: '#2c216a'},
+                                {title: animal5, value: horses.length, color: '#216a5b'},
+                                {title: animal6, value: pigs.length, color: '#216a3c'},
+                            ]}
+                            labelPosition={50}
+                            lengthAngle={360}
+                            lineWidth={15}
+                            paddingAngle={0}
+                            radius={50}
+                            rounded
+                            startAngle={0}
+                            viewBoxSize={[100, 100]}
+
+                        />
+                        ;
+
                     </div>
                 </Grid>
 
@@ -227,11 +312,11 @@ function MissingReport(props) {
                         <TableHead>
                             <TableRow>
                                 <TableCell>N0.</TableCell>
-                                <TableCell align="left">Kind</TableCell>
-                                <TableCell align="left">Breed</TableCell>
-                                <TableCell align="left">Brand</TableCell>
-                                <TableCell align="left">Colour</TableCell>
-                                <TableCell align="left">Age</TableCell>
+                                <TableCell align="right">Kind</TableCell>
+                                <TableCell align="right">Breed</TableCell>
+                                <TableCell align="right">Brand</TableCell>
+                                <TableCell align="right">Colour</TableCell>
+                                <TableCell align="right">Age</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -243,11 +328,11 @@ function MissingReport(props) {
                                         <TableCell component="th" scope="row">
                                             {val.idlost_livestock}
                                         </TableCell>
-                                        <TableCell align="left">{val.kind}</TableCell>
-                                        <TableCell align="left">{val.breed}</TableCell>
-                                        <TableCell align="left">{val.brand}</TableCell>
-                                        <TableCell align="left">{val.colour}</TableCell>
-                                        <TableCell align="left">{val.age}</TableCell>
+                                        <TableCell align="right">{val.kind}</TableCell>
+                                        <TableCell align="right">{val.breed}</TableCell>
+                                        <TableCell align="right">{val.brand}</TableCell>
+                                        <TableCell align="right">{val.colour}</TableCell>
+                                        <TableCell align="right">{val.age}</TableCell>
                                     </TableRow>
                                 )
                             )}
@@ -264,4 +349,4 @@ function MissingReport(props) {
     }
 }
 
-export default withRouter(withStyles(styles)(MissingReport));
+export default withRouter(withStyles(styles)(ReportAnimalZone));

@@ -47,7 +47,8 @@ function Register(props) {
 	const [mark, setmark]=useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	
+
+	Axios.defaults.withCredentials = true;
 
 	return (
 		<main className={classes.main}>
@@ -127,7 +128,7 @@ function Register(props) {
 			}).then(()=>{
 				alert("Registered")
 			})
-			//props.history.replace('/dashboard')
+			props.history.replace('/login')
 		} catch(error) {
 			alert(error.message)
 		}

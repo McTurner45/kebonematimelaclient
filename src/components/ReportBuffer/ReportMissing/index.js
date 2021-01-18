@@ -10,7 +10,7 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems } from "../listItems";
+import { mainListItems } from "../../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {  withRouter } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -23,7 +23,7 @@ import {
   Button,
   FormControl,
   Input,
-  InputLabel,
+  InputLabel, MenuItem, Select,
 } from "@material-ui/core";
 
 const drawerWidth = 240;
@@ -134,6 +134,10 @@ const styles = (theme) => ({
       marginRight: "auto",
     },
   },
+  inputLable:{
+    width: 540,
+
+  },
   
 });
 
@@ -145,6 +149,10 @@ function ReportMissing(props) {
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setKind(event.target.value);
   };
 
   const [age, setAge] = useState("");
@@ -244,19 +252,24 @@ function ReportMissing(props) {
               onChange={(e) => setColour(e.target.value)}
             />
           </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="kind">
-              Describe the kind of your livestock
-            </InputLabel>
-            <Input
-              id="kind"
-              name="kind"
-              autoComplete="off"
-              autoFocus
-              value={kind}
-              onChange={(e) => setKind(e.target.value)}
-            />
+          <FormControl margin="normal">
+            <InputLabel className={classes.inputLable} id="kind">Kind of your livestock</InputLabel>
+            <Select
+                id="kind"
+                name="kind"
+                value={kind}
+                onChange={handleChange}
+                className={classes.inputLable}
+            >
+              <MenuItem value={"Cow"}>Cow</MenuItem>
+              <MenuItem value={"Goat"}>Goat</MenuItem>
+              <MenuItem value={"Sheep"}>Sheep</MenuItem>
+              <MenuItem value={"Donkey"}>Donkey</MenuItem>
+              <MenuItem value={"Horse"}>Horse</MenuItem>
+              <MenuItem value={"Pig"}>Pig</MenuItem>
+            </Select>
           </FormControl>
+
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="brand">Livestock Brand</InputLabel>
             <Input

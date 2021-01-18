@@ -7,14 +7,14 @@ import Dashboard from '../Dashboard'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { CssBaseline, CircularProgress } from '@material-ui/core'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import ReportMissing from '../ReportMissing'
+import ReportMissing from '../ReportBuffer/ReportMissing'
 import  ReportBuffer  from '../ReportBuffer';
-import ReportFound from '../ReportFound'
+import ReportFound from '../ReportBuffer/ReportFound'
 import GenReport from "../GenReport";
-import ReportAnimalZone from "../ReportAnimalZone";
-import FoundBranded from "../FoundBranded";
-import MissingReport from "../MissingReport";
-import FoundReport from "../FoundReport";
+import ReportAnimalZone from "../GenReport/ReportAnimalZone";
+import FoundBranded from "../GenReport/FoundBranded";
+import MissingReport from "../GenReport/MissingReport";
+import FoundReport from "../GenReport/FoundReport";
 
 const theme = createMuiTheme()
 

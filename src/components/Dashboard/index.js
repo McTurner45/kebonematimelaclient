@@ -162,7 +162,7 @@ const styles = (theme) => ({
             marginTop: theme.spacing(2),
         },
     },
-    searchRoot:{
+    searchRoot: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -182,6 +182,8 @@ function Dashboard(props) {
     const {classes} = props;
     const [open, setOpen] = React.useState(true);
     const [searchBrand, setSearchBrand] = useState("");
+    const [loginStatus, setLoginStatus] = useState("");
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -199,14 +201,26 @@ function Dashboard(props) {
     const [lost_livestock, setLost_livestock] = useState([]);
 
     useEffect(() => {
-        Axios.get("http://localhost:3002/api/lost_livestock").then((response) => {
+        Axios.get("http://localhost:3002/api/found_livestock").then((response) => {
             setLost_livestock(response.data);
         });
     }, []);
 
     const fiteredLivestock = lost_livestock.filter(livestock => {
         return livestock.brand.toLowerCase().includes(searchBrand.toLowerCase());
-    })
+    });
+
+    Axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        Axios.get("http://localhost:3002/api/login").then((response) => {
+            if (response.data.loggedIn === true) {
+                setLoginStatus(response.data.user[0])
+            } else {
+                props.history.push("/");
+            }
+        })
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -354,7 +368,9 @@ function Dashboard(props) {
     );
 
     async function logout() {
-        props.history.push("/");
+        Axios.get("http://localhost:3002/api/logount").then(() => {
+            props.history.push("/");
+        })
     }
 }
 

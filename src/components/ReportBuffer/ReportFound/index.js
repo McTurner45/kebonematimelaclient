@@ -10,7 +10,7 @@ import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import {mainListItems} from "../listItems";
+import {mainListItems} from "../../listItems";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {withRouter} from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -21,7 +21,7 @@ import {
     Button,
     FormControl,
     Input,
-    InputLabel,
+    InputLabel, Select, MenuItem,
 } from "@material-ui/core";
 
 const drawerWidth = 240;
@@ -132,6 +132,10 @@ const styles = (theme) => ({
             marginRight: "auto",
         },
     },
+    inputLable:{
+        width: 540,
+
+    },
 
 });
 
@@ -149,6 +153,7 @@ function ReportFound(props) {
     const [kind, setKind] = useState("");
     const [brand, setBrand] = useState("");
     const [breed, setBreed] = useState("");
+    const [zone, setZone]= useState("");
 
     const [lost_livestock, setLost_livestock] = useState([]);
 
@@ -157,6 +162,10 @@ function ReportFound(props) {
             setLost_livestock(response.data);
         });
     }, []);
+
+    const handleChange = (event) => {
+        setKind(event.target.value);
+    };
 
     return (
         <div className={classes.root}>
@@ -218,7 +227,6 @@ function ReportFound(props) {
                     <Typography component="h1" variant="h3">
                         Report Lost and Found Livestock
                     </Typography>
-
                     <Typography component="h1" variant="h6">
                         Complete the form below with the details the livestock you discovered in among your flock
                     </Typography>
@@ -226,6 +234,45 @@ function ReportFound(props) {
                         className={classes.form}
                         onSubmit={(e) => e.preventDefault() && false}
                     >
+                        <FormControl margin="normal" required fullWidth>
+                        <InputLabel htmlFor="brand">Animal Brand</InputLabel>
+                        <Input
+                            id="brand"
+                            name="brand"
+                            autoComplete="off"
+                            autoFocus
+                            value={brand}
+                            onChange={(e) => setBrand(e.target.value)}
+                        />
+                    </FormControl>
+                        <FormControl margin="normal">
+                        <InputLabel className={classes.inputLable} id="kind">Kind of your livestock</InputLabel>
+                        <Select
+                            id="kind"
+                            name="kind"
+                            value={kind}
+                            onChange={handleChange}
+                            className={classes.inputLable}
+                        >
+                            <MenuItem value={"Cow"}>Cow</MenuItem>
+                            <MenuItem value={"Goat"}>Goat</MenuItem>
+                            <MenuItem value={"Sheep"}>Sheep</MenuItem>
+                            <MenuItem value={"Donkey"}>Donkey</MenuItem>
+                            <MenuItem value={"Horse"}>Horse</MenuItem>
+                            <MenuItem value={"Pig"}>Pig</MenuItem>
+                        </Select>
+                    </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                        <InputLabel htmlFor="breed">Animal Breed</InputLabel>
+                        <Input
+                            id="breed"
+                            name="breed"
+                            autoComplete="off"
+                            autoFocus
+                            value={breed}
+                            onChange={(e) => setBreed(e.target.value)}
+                        />
+                    </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="colour">Animal Colour</InputLabel>
                             <Input
@@ -237,40 +284,24 @@ function ReportFound(props) {
                                 onChange={(e) => setColour(e.target.value)}
                             />
                         </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="kind">
-                                Describe the kind of animal
-                            </InputLabel>
-                            <Input
-                                id="kind"
-                                name="kind"
-                                autoComplete="off"
-                                autoFocus
-                                value={kind}
-                                onChange={(e) => setKind(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="brand">Animal Brand</InputLabel>
-                            <Input
-                                id="brand"
-                                name="brand"
-                                autoComplete="off"
-                                autoFocus
-                                value={brand}
-                                onChange={(e) => setBrand(e.target.value)}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="breed">Animal Breed</InputLabel>
-                            <Input
-                                id="breed"
-                                name="breed"
-                                autoComplete="off"
-                                autoFocus
-                                value={breed}
-                                onChange={(e) => setBreed(e.target.value)}
-                            />
+                        <FormControl margin="normal">
+                            <InputLabel className={classes.inputLable} id="zone">Zone</InputLabel>
+                            <Select
+                                id="zone"
+                                name="zone"
+                                value={zone}
+                                onChange={(event) => {
+                                    setZone(event.target.value);
+                                }}
+                                className={classes.inputLable}
+                            >
+                                <MenuItem value={"C1"}>C1</MenuItem>
+                                <MenuItem value={"C2"}>C2</MenuItem>
+                                <MenuItem value={"C3"}>C3</MenuItem>
+                                <MenuItem value={"C4"}>C4</MenuItem>
+                                <MenuItem value={"C5"}>C5</MenuItem>
+                                <MenuItem value={"C6"}>C6</MenuItem>
+                            </Select>
                         </FormControl>
 
                         <Button
@@ -302,6 +333,7 @@ function ReportFound(props) {
                         kind: kind,
                         brand: brand,
                         breed: breed,
+                        zone: zone,
                     }).then(() => {
                         alert("Reported!");
                     });
@@ -318,6 +350,7 @@ function ReportFound(props) {
                 kind: kind,
                 brand: brand,
                 breed: breed,
+                zone: zone,
                 status: status,
             }).then(() => {
                 alert("Reported");
