@@ -90,21 +90,7 @@ function SignIn(props) {
     )
 
     async function login() {
-        try {
-            Axios.post("http://localhost:3002/api/login", {
-                email: email,
-                password: password,
-
-            }).then(() => {
-                alert("loggedIn")
-                props.history.replace('/dashboard')
-            })
-        } catch (error) {
-            alert(error.message)
-            console.log(error.message)
-        }
-
-
+        props.history.replace('/dashboard');
     }
 }
 

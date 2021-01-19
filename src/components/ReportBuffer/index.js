@@ -135,15 +135,6 @@ function ReportBuffer(props) {
 
     const [loginStatus, setLoginStatus] = useState("")
 
-    useEffect(() => {
-        Axios.get("http://localhost:3002/api/login").then((response) => {
-            if (response.data.loggedIn === true) {
-                setLoginStatus(response.data.user[0])
-            } else {
-                props.history.push("/");
-            }
-        })
-    }, [])
 
     return (
         <div className={classes.root}>
@@ -246,9 +237,7 @@ function ReportBuffer(props) {
     );
 
     async function logout() {
-        Axios.get("http://localhost:3002/api/logount").then(() => {
-            props.history.push("/");
-        })
+        props.history.push("/");
     }
 }
 

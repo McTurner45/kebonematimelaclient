@@ -201,7 +201,7 @@ function Dashboard(props) {
     const [lost_livestock, setLost_livestock] = useState([]);
 
     useEffect(() => {
-        Axios.get("http://localhost:3002/api/found_livestock").then((response) => {
+        Axios.get("https://kebonematimela.herokuapp.com/api/found_livestock").then((response) => {
             setLost_livestock(response.data);
         });
     }, []);
@@ -211,16 +211,6 @@ function Dashboard(props) {
     });
 
     Axios.defaults.withCredentials = true;
-
-    useEffect(() => {
-        Axios.get("http://localhost:3002/api/login").then((response) => {
-            if (response.data.loggedIn === true) {
-                setLoginStatus(response.data.user[0])
-            } else {
-                props.history.push("/");
-            }
-        })
-    }, []);
 
     return (
         <div className={classes.root}>
@@ -368,9 +358,7 @@ function Dashboard(props) {
     );
 
     async function logout() {
-        Axios.get("http://localhost:3002/api/logount").then(() => {
-            props.history.push("/");
-        })
+        props.history.push("/");
     }
 }
 

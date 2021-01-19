@@ -155,12 +155,17 @@ function ReportMissing(props) {
     setKind(event.target.value);
   };
 
+  const handleChange1 = (event) => {
+    setZone(event.target.value);
+  };
+
   const [age, setAge] = useState("");
   const [colour, setColour] = useState("");
   const [kind, setKind] = useState("");
   const [brand, setBrand] = useState("");
   const [breed, setBreed] = useState("");
   const [size, setSize] = useState("");
+  const [zone,setZone]= useState("");
 
   return (
     <div className={classes.root}>
@@ -228,7 +233,7 @@ function ReportMissing(props) {
         </Typography>
         <form
           className={classes.form}
-          onSubmit={(e) => e.preventDefault() && false}
+          onSubmit={(e) => e.preventDefault() && true}
         >
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="age">Livestock Age</InputLabel>
@@ -312,6 +317,23 @@ function ReportMissing(props) {
               Weight
             </FormHelperText>
           </FormControl>
+          <FormControl margin="normal">
+            <InputLabel className={classes.inputLable} id="zone">Zone last seen</InputLabel>
+            <Select
+                id="zone"
+                name="zone"
+                value={zone}
+                onChange={handleChange1}
+                className={classes.inputLable}
+            >
+              <MenuItem value={"C1"}>C1</MenuItem>
+              <MenuItem value={"C2"}>C2</MenuItem>
+              <MenuItem value={"C3"}>C3</MenuItem>
+              <MenuItem value={"C4"}>C4</MenuItem>
+              <MenuItem value={"C5"}>C5</MenuItem>
+              <MenuItem value={"C6"}>C6</MenuItem>
+            </Select>
+          </FormControl>
 
           <Button
             type="submit"
@@ -330,16 +352,20 @@ function ReportMissing(props) {
   );
 
   async function onReport() {
+    console.log(age);
     try {
-      Axios.post("http://localhost:3002/api/report/missing", {
-        age: age,
+      Axios.post("https://kebonematimela.herokuapp.com/api/report/missing", {
+        animalage: age,
         colour: colour,
         kind: kind,
         brand: brand,
         breed: breed,
         size: size,
+        zone: zone,
+
       }).then(() => {
         alert("Reported");
+        props.history.push("/report/missing");
       });
     } catch (error) {
       alert(error.message);

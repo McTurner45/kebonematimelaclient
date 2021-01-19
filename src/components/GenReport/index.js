@@ -133,7 +133,7 @@ function GenReport(props) {
     const [loginStatus, setLoginStatus] = useState("")
 
     useEffect(() => {
-        Axios.get("http://localhost:3002/api/login").then((response) => {
+        Axios.get("https://kebonematimela.herokuapp.com/api/login").then((response) => {
             if (response.data.loggedIn === true) {
                 setLoginStatus(response.data.user[0])
             } else {
@@ -273,9 +273,8 @@ function GenReport(props) {
     );
 
     async function logout() {
-        Axios.get("http://localhost:3002/api/logount").then(() => {
-            props.history.push("/");
-        })
+        props.history.push("/");
+
     }
 }
 

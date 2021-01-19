@@ -116,7 +116,7 @@ function Register(props) {
 
 	async function onRegister() {
 		try {
-			Axios.post("http://localhost:3002/api/register",{
+			Axios.post("https://kebonematimela.herokuapp.com/api/register",{
 				fullname: fulName,
 				email: email,
 				mark: mark,
@@ -127,11 +127,12 @@ function Register(props) {
 
 			}).then(()=>{
 				alert("Registered")
+
 			})
-			props.history.replace('/login')
 		} catch(error) {
 			alert(error.message)
 		}
+		props.history.replace('/login');
 	}
 }
 

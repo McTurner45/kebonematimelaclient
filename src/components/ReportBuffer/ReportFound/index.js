@@ -132,7 +132,7 @@ const styles = (theme) => ({
             marginRight: "auto",
         },
     },
-    inputLable:{
+    inputLable: {
         width: 540,
 
     },
@@ -153,7 +153,7 @@ function ReportFound(props) {
     const [kind, setKind] = useState("");
     const [brand, setBrand] = useState("");
     const [breed, setBreed] = useState("");
-    const [zone, setZone]= useState("");
+    const [zone, setZone] = useState("");
 
     const [lost_livestock, setLost_livestock] = useState([]);
 
@@ -235,44 +235,44 @@ function ReportFound(props) {
                         onSubmit={(e) => e.preventDefault() && false}
                     >
                         <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="brand">Animal Brand</InputLabel>
-                        <Input
-                            id="brand"
-                            name="brand"
-                            autoComplete="off"
-                            autoFocus
-                            value={brand}
-                            onChange={(e) => setBrand(e.target.value)}
-                        />
-                    </FormControl>
+                            <InputLabel htmlFor="brand">Animal Brand</InputLabel>
+                            <Input
+                                id="brand"
+                                name="brand"
+                                autoComplete="off"
+                                autoFocus
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                            />
+                        </FormControl>
                         <FormControl margin="normal">
-                        <InputLabel className={classes.inputLable} id="kind">Kind of your livestock</InputLabel>
-                        <Select
-                            id="kind"
-                            name="kind"
-                            value={kind}
-                            onChange={handleChange}
-                            className={classes.inputLable}
-                        >
-                            <MenuItem value={"Cow"}>Cow</MenuItem>
-                            <MenuItem value={"Goat"}>Goat</MenuItem>
-                            <MenuItem value={"Sheep"}>Sheep</MenuItem>
-                            <MenuItem value={"Donkey"}>Donkey</MenuItem>
-                            <MenuItem value={"Horse"}>Horse</MenuItem>
-                            <MenuItem value={"Pig"}>Pig</MenuItem>
-                        </Select>
-                    </FormControl>
+                            <InputLabel className={classes.inputLable} id="kind">Kind of your livestock</InputLabel>
+                            <Select
+                                id="kind"
+                                name="kind"
+                                value={kind}
+                                onChange={handleChange}
+                                className={classes.inputLable}
+                            >
+                                <MenuItem value={"Cow"}>Cow</MenuItem>
+                                <MenuItem value={"Goat"}>Goat</MenuItem>
+                                <MenuItem value={"Sheep"}>Sheep</MenuItem>
+                                <MenuItem value={"Donkey"}>Donkey</MenuItem>
+                                <MenuItem value={"Horse"}>Horse</MenuItem>
+                                <MenuItem value={"Pig"}>Pig</MenuItem>
+                            </Select>
+                        </FormControl>
                         <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="breed">Animal Breed</InputLabel>
-                        <Input
-                            id="breed"
-                            name="breed"
-                            autoComplete="off"
-                            autoFocus
-                            value={breed}
-                            onChange={(e) => setBreed(e.target.value)}
-                        />
-                    </FormControl>
+                            <InputLabel htmlFor="breed">Animal Breed</InputLabel>
+                            <Input
+                                id="breed"
+                                name="breed"
+                                autoComplete="off"
+                                autoFocus
+                                value={breed}
+                                onChange={(e) => setBreed(e.target.value)}
+                            />
+                        </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="colour">Animal Colour</InputLabel>
                             <Input
@@ -311,6 +311,7 @@ function ReportFound(props) {
                             color="secondary"
                             onClick={onReport}
                             className={classes.submit}
+                            onSubmit={(e) => e.preventDefault() && false}
                         >
                             Report
                         </Button>
@@ -328,7 +329,7 @@ function ReportFound(props) {
         lost_livestock.filter(value => {
             if (value.brand.toLowerCase().includes(brand.toLowerCase())) {
                 try {
-                    Axios.post("http://localhost:3002/api/report/found", {
+                    Axios.post("https://kebonematimela.herokuapp.com/api/report/found/not_in_db", {
                         colour: colour,
                         kind: kind,
                         brand: brand,
@@ -339,31 +340,32 @@ function ReportFound(props) {
                     });
                 } catch (error) {
                     alert(error.message);
+                    console.log(error.message);
                 }
                 setTemp = "true";
             }
         });
-        if (temp!=="true"){
-        try {
-            Axios.post("http://localhost:3002/api/report/found/not_in_db", {
-                colour: colour,
-                kind: kind,
-                brand: brand,
-                breed: breed,
-                zone: zone,
-                status: status,
-            }).then(() => {
-                alert("Reported");
-            });
-        } catch (error) {
-            alert(error.message);
+        if (temp !== "true") {
+            try {
+                Axios.post("https://kebonematimela.herokuapp.com/api/report/found/not_in_db", {
+                    colour: colour,
+                    kind: kind,
+                    brand: brand,
+                    breed: breed,
+                    zone: zone,
+                    status: status,
+                }).then(() => {
+                    alert("Reported");
+                });
+            } catch (error) {
+                alert(error.message);
+            }
         }
     }
-}
 
-async function logout() {
-    props.history.push("/");
-}
+    async function logout() {
+        props.history.push("/");
+    }
 
 }
 

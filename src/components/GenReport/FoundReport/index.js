@@ -151,7 +151,7 @@ function FoundReport(props) {
     const [lost_livestock, setLost_livestock] = useState([]);
 
     useEffect(() => {
-        Axios.get("http://localhost:3002/api/found_livestock").then((response) => {
+        Axios.get("https://kebonematimela.herokuapp.com/api/found_livestock").then((response) => {
             setLost_livestock(response.data);
         });
     }, []);
@@ -338,9 +338,7 @@ function FoundReport(props) {
         ;
 
     async function logout() {
-        Axios.get("http://localhost:3002/api/logount").then(() => {
-            props.history.push("/");
-        })
+        props.history.push("/");
     }
 }
 
